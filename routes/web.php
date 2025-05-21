@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\YapController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,6 +13,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+    Route::resource("yaps", YapController::class);
 });
 
 require __DIR__.'/settings.php';
