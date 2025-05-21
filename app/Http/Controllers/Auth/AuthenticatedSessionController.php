@@ -38,9 +38,9 @@ class AuthenticatedSessionController extends Controller
         $user = User::where("phone" , $request->phone)->first();
         if($user){
             Auth::login($user);
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('yaps.index', absolute: false));
         }
-        return to_route("login");
+        return to_route("yaps.index");
     }
 
     /**

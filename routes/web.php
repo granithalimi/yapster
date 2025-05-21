@@ -13,7 +13,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
-    Route::resource("yaps", YapController::class);
+    Route::resource("yaps", YapController::class)->only([
+        'index'
+    ]);
 });
 
 require __DIR__.'/settings.php';
