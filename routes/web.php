@@ -16,6 +16,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource("yaps", YapController::class)->only([
         'index'
     ]);
+    Route::get("friends", function () {
+        return Inertia::render("friends");
+    })->name("friends");
 });
 
 require __DIR__.'/settings.php';
