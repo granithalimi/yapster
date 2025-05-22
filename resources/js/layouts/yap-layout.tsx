@@ -12,15 +12,16 @@ function YapLayout({ children, title }: any) {
         cleanup();
         router.flushAll();
     };
-    console.log(title);
     return (
         <div className="roboto_ min-h-screen min-w-full bg-gradient-to-br from-[#2EE59D] to-[#11998e]">
-            <div className="flex w-full justify-center pt-4 pb-2">
+            {/* Pc fix this shittt.... */}
+            {/* Phone  */}
+            <div className="flex w-full justify-center pt-4 pb-2 md:hidden">
                 <div className="montserrat_ w-11/12 text-3xl">{title}</div>
             </div>
             <Head title={title} />
-            {children}
-            <div className="md:ps-1/6 fixed bottom-0 flex h-1/12 w-full items-center justify-center bg-[#11998e] md:h-screen md:w-1/6 md:flex-col md:justify-around">
+            <div className="md:hidden">{children}</div>
+            <div className="fixed bottom-0 flex h-1/12 w-full items-center justify-center bg-[#11998e] md:hidden">
                 <Link href={route('dashboard')} className="flex w-1/4 flex-col items-center">
                     <MdOutlineDashboard className="text-3xl" />
                     <p className="text-xs">Dashboard</p>
