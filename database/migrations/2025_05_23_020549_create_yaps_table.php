@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('yaps', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sender_id');
-            $table->unsignedBigInteger('receiver_id');
+            $table->unsignedBigInteger("convo_id");
+            $table->unsignedBigInteger("sender_id");
+            $table->unsignedBigInteger("receiver_id");
             $table->string("message");
             $table->timestamps();
 
+            $table->foreign("convo_id")->references("id")->on("conversations")->onDelete("cascade");
             $table->foreign("sender_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("receiver_id")->references("id")->on("users")->onDelete("cascade");
         });

@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Yap extends Model
+class Conversation extends Model
 {
     //
     protected $fillable = [
-        "convo_id", 
-        "message",
         "sender_id",
         "receiver_id",
     ];

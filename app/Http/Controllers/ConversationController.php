@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Yap;
+use App\Models\Conversation;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class YapController extends Controller
+class ConversationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,6 @@ class YapController extends Controller
     public function index()
     {
         //
-        return Inertia::render("yaps");
     }
 
     /**
@@ -36,7 +34,7 @@ class YapController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Yap $yap)
+    public function show(Conversation $conversation)
     {
         //
     }
@@ -44,7 +42,7 @@ class YapController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Yap $yap)
+    public function edit(Conversation $conversation)
     {
         //
     }
@@ -52,7 +50,7 @@ class YapController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Yap $yap)
+    public function update(Request $request, Conversation $conversation)
     {
         //
     }
@@ -60,7 +58,7 @@ class YapController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Yap $yap)
+    public function destroy(Conversation $conversation)
     {
         //
     }
