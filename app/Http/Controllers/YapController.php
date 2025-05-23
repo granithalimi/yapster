@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Yap;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Conversation;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class YapController extends Controller
 {
@@ -14,7 +16,16 @@ class YapController extends Controller
     public function index()
     {
         //
-        return Inertia::render("yaps");
+        $my_convo = Conversation::with(['yaps' => function ($q) {
+            $q->with(["receiver_user", "sender_user"])->orderBy('created_at', 'desc');
+        }])
+        ->where("sender_id", auth()->id())
+        ->orWhere('receiver_id', auth()->id())
+        ->get();
+
+        return Inertia::render("yaps", [
+            "my_convos" => $my_convo,
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Yap extends Model
@@ -13,4 +14,12 @@ class Yap extends Model
         "sender_id",
         "receiver_id",
     ];
+
+    public function sender_user(){
+        return $this->hasOne(User::class, "id", "sender_id");
+    }
+
+    public function receiver_user(){
+        return $this->hasOne(User::class, "id", "receiver_id");
+    }
 }
