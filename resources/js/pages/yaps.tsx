@@ -10,7 +10,7 @@ function yaps({ my_convos, auth }: any) {
     //     cleanup();
     //     router.flushAll();
     // };
-    console.log(my_convos);
+    // console.log(my_convos);
     const [convos, setConvos] = useState<any>({});
     useEffect(() => {
         setConvos(my_convos);
