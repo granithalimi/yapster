@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::resource("yaps", YapController::class)->only(['index']);
+    Route::resource("yaps", YapController::class);
     Route::resource("friends", FriendController::class)->only(['index', 'destroy', 'store', 'update']);
     Route::get("search/{name}", [SearchController::class, 'searchFriends'])->name("searchFriends");
     Route::get("my_profile", [MyProfileController::class, 'myProfile'])->name("my_profile");

@@ -18,8 +18,6 @@ function my_notifs({ notifs }: any) {
         setData('status', 'accepted');
     }, [notifs]);
 
-    console.log(notifs);
-
     const handleRemove = (e: any, id: any) => {
         e.preventDefault();
         if (confirm('Are you sure you want to remove this friend?')) {

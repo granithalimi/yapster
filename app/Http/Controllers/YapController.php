@@ -50,6 +50,10 @@ class YapController extends Controller
     public function show(Yap $yap)
     {
         //
+        return dd($yap);
+        // return Inertia::render("yap", [
+        //     'user'=> $yap,
+        // ]);
     }
 
     /**

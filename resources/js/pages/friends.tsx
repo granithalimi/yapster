@@ -5,7 +5,7 @@ import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
 function friends({ friends, auth }: any) {
-    // console.log(friends);
+    console.log(friends);
     const [friend, setFriends] = useState<any>({});
     const {
         data,
@@ -46,8 +46,7 @@ function friends({ friends, auth }: any) {
                         friend.map((f: any, ind: any) => (
                             <a
                                 key={ind}
-                                // onClick={(e) => console.log('go chatting')}
-                                href={route('dashboard')}
+                                href={route('yaps.show', f.users.id)}
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">

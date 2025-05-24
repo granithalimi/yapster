@@ -73,6 +73,6 @@ class FriendController extends Controller
     {
         //
         Friend::where("id", $friend->id)->first()->delete();
-        return to_route("friends.index");
+        return redirect()->back();
     }
 }
