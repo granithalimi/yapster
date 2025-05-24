@@ -34,9 +34,9 @@ class FriendController extends Controller
     public function store(Request $request)
     {
         //
-        // Friend::create(['sender_id' => auth()->id, 'receiver_id', $request->id]);
-        // return to_route("friends.index");
-        return dd($request);
+        Friend::create(['sender_id' => auth()->id(), 'receiver_id' => $request->id]);
+        return to_route("friends.index");
+        // return dd($request->id);
     }
 
     /**

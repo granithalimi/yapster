@@ -10,20 +10,14 @@ function friends({ friends, auth }: any) {
     const {
         data,
         setData,
-        post,
         delete: destroy,
     } = useForm<any>({
         name: '',
     });
+
     useEffect(() => {
         setFriends(friends);
     }, [friends]);
-
-    const handleSearch = (e: any) => {
-        e.preventDefault();
-        post(route('searchFriends'));
-        console.log(data.name);
-    };
 
     const handleRemove = (e: any, id: any) => {
         e.preventDefault();
@@ -36,9 +30,8 @@ function friends({ friends, auth }: any) {
     return (
         <YapLayout title={'My Friends'}>
             <div className="flex w-full justify-center pb-4">
-                <form onSubmit={(e) => handleSearch(e)} className="relative w-11/12">
+                <form action={route('searchFriends', data.name)} className="relative w-11/12">
                     <input
-                        value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         className="w-full rounded-xl bg-white/20 py-1 ps-7 text-black backdrop-blur-2xl"
                         placeholder={`Search Friends...`}

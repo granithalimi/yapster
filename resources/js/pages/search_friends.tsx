@@ -1,18 +1,31 @@
 import YapLayout from '@/layouts/yap-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 
 function search_friends({ searched, search }: any) {
     console.log(searched);
-    const [friend, setFriends] = useState<any>({});
+    const { data, setData, post, delete: destroy } = useForm<any>();
+    const [friend, setFriends] = useState<any>({
+        id: '',
+    });
+
     useEffect(() => {
         setFriends(searched);
     }, [searched]);
 
-    const addFriend = (e: any, id: any) => {
+    const handleAddFriend = (e: any, id: any) => {
         e.preventDefault();
-        route('friends.store', id);
+        console.log(id);
+        post(route('friends.store'));
+    };
+
+    const handleRemove = (e: any, id: any) => {
+        e.preventDefault();
+        if (confirm('Are you sure you want to remove this friend?')) {
+            console.log(id);
+            destroy(route('friends.destroy', id));
+        }
     };
     return (
         <YapLayout title={'Searched Friend'}>
@@ -23,7 +36,7 @@ function search_friends({ searched, search }: any) {
                         friend.map((f: any, ind: any) => (
                             <a
                                 key={ind}
-                                onClick={(e) => console.log('go chatting')}
+                                href={route('dashboard')}
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
@@ -36,22 +49,31 @@ function search_friends({ searched, search }: any) {
                                     <div className="flex h-full items-center gap-3 text-sm">
                                         {f.friend.length > 0 ? (
                                             f.friend[0].status == 'accepted' ? (
-                                                <button type="submit" className="me-3 rounded-lg bg-gray-500 px-3 py-1 font-bold">
-                                                    remove
-                                                </button>
+                                                <form
+                                                    onSubmit={(e) => handleRemove(e, f.friend[0].id)}
+                                                    className="flex h-full items-center gap-3 text-sm"
+                                                >
+                                                    <button type="submit" className="me-3 rounded-lg bg-gray-500 px-3 py-1 font-bold">
+                                                        remove
+                                                    </button>
+                                                </form>
                                             ) : (
-                                                <button type="submit" className="me-3 rounded-lg bg-[coral] px-3 py-1 font-bold">
-                                                    pending
-                                                </button>
+                                                <form onSubmit={(e) => handleRemove(e, f.friend[0].id)}>
+                                                    <button type="submit" className="me-3 rounded-lg bg-[coral] px-3 py-1 font-bold">
+                                                        pending
+                                                    </button>
+                                                </form>
                                             )
                                         ) : (
-                                            <Link
-                                                type="submit"
-                                                href={route('friends.store', f.id)}
-                                                className="me-3 rounded-lg bg-blue-500 px-3 py-1 font-bold"
-                                            >
-                                                Add Friend
-                                            </Link>
+                                            <form onSubmit={(e) => handleAddFriend(e, f.id)}>
+                                                <button
+                                                    type="submit"
+                                                    className="me-3 rounded-lg bg-blue-500 px-3 py-1 font-bold"
+                                                    onClick={(e) => setData('id', f.id)}
+                                                >
+                                                    Add Friend
+                                                </button>
+                                            </form>
                                         )}
                                     </div>
                                 </div>
