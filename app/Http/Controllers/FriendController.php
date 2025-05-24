@@ -61,6 +61,9 @@ class FriendController extends Controller
     public function update(Request $request, Friend $friend)
     {
         //
+        // return dd($request->status);
+        Friend::find($friend->id)->update(['status' => $request->status]);
+        return to_route("notifs");
     }
 
     /**

@@ -15,4 +15,7 @@ class Friend extends Model
     public function users() {
         return $this->hasOne(User::class, "id", "receiver_id");
     }
+    public function notifs() {
+        return $this->hasOne(User::class, "id", "sender_id");
+    }
 }

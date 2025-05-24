@@ -12,7 +12,7 @@ class MyProfileController extends Controller
     public function myProfile() {
         return Inertia::render("my_profile", [
             'following' => Friend::where("sender_id", auth()->id())->count(),
-            'followers' => Friend::with('users')->where("sender_id", auth()->id())->where("status", "accepted")->count(), 
+            'followers' => Friend::with('users')->where("receiver_id", auth()->id())->where("status", "accepted")->count(), 
         ]);
     }
 }
