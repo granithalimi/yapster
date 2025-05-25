@@ -28,7 +28,7 @@ function yaps({ my_convos, auth }: any) {
                                 key={ind}
                                 // href={route('yaps.show', convo.receiver_id)}
                                 href={convo.sender_id === auth.user.id ? route('yaps.show', convo.receiver_id) : route('yaps.show', convo.sender_id)}
-                                className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
+                                className="my-3 flex h-20 w-full gap-3 overflow-hidden rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
                                     <CgProfile className="text-5xl" />

@@ -67,7 +67,7 @@ function my_notifs({ notifs }: any) {
                             </a>
                         ))
                     ) : (
-                        <h1>no notifs</h1>
+                        <h1>No Notifications :(</h1>
                     )}
                 </div>
             </div>

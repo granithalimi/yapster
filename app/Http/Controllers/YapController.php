@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use League\Uri\IPv4\Converter;
 
 class YapController extends Controller
 {
@@ -42,6 +43,25 @@ class YapController extends Controller
     public function store(Request $request)
     {
         //
+        $userId = auth()->id();
+        $otherUserId = $request->receiverId;
+
+        $conversation = Conversation::where(function ($query) use ($userId, $otherUserId) {
+        $query->where('sender_id', $userId)
+              ->where('receiver_id', $otherUserId);
+    })->orWhere(function ($query) use ($userId, $otherUserId) {
+        $query->where('sender_id', $otherUserId)
+              ->where('receiver_id', $userId);
+    })->first();
+
+        if($conversation){
+            Yap::create(['sender_id' => auth()->id(), 'receiver_id' => $request->receiverId, 'convo_id' => $conversation->id, 'message' => $request->message]);
+            return redirect()->back();
+        }else{
+            Conversation::create(['receiver_id' => $request->receiverId, 'sender_id' => auth()->id()]);
+            Yap::create(['sender_id' => auth()->id(), 'receiver_id' => $request->receiverId, 'convo_id' => Conversation::orderBy("id", "desc")->first()->id, 'message' => $request->message]);
+            return redirect()->back();
+        }
     }
 
     /**

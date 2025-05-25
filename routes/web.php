@@ -22,14 +22,14 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::resource("yaps", YapController::class)->only(['index']);
+    Route::resource("yaps", YapController::class)->only(['index', 'store']);
     Route::resource("friends", FriendController::class)->only(['index', 'destroy', 'store', 'update']);
 
     Route::get("yaps/{id}", function(Request $request) {
         $user1 = auth()->id();
         $user2 = $request->id;
 
-        $yaps = Conversation::with(['yaps' => function($q) {$q->with("sender_user");}])->where(function($q) use ($user1, $user2) {
+        $yaps = Conversation::with(['yaps' => function($q) {$q->with("sender_user")->orderBy('created_at', 'desc');}])->where(function($q) use ($user1, $user2) {
             $q->where('sender_id', $user1)->where('receiver_id', $user2);
         })->orWhere(function($q) use ($user1, $user2) {
             $q->where('sender_id', $user2)->where('receiver_id', $user1);

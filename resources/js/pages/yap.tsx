@@ -1,26 +1,51 @@
 import YapLayout from '@/layouts/yap-layout';
+import { useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
-function yap({ user, yaps }: any) {
+function yap({ user, yaps, auth }: any) {
     console.log(yaps);
     const [yap, setYaps] = useState<any>({});
     useEffect(() => {
         setYaps(yaps);
     }, [yaps]);
     // fix the bug where there is no convo nor yaps
+    const { data, setData, post } = useForm<any>({
+        message: '',
+        receiverId: user.id,
+    });
+    const handleSend = (e: any) => {
+        e.preventDefault();
+        post(route('yaps.store'), {
+            onFinish: () => {
+                setData('message', '');
+            },
+        });
+    };
     return (
         <YapLayout title={`Chatting with ${user.name}`}>
-            {/* {yap.yaps && yap.yaps.length > 0 && yap.yaps.map((y: any, ind: any) => <div key={ind}>{y.message}</div>)} */}
-            {yap && yap.length > 0 ? (
-                yap[0].yaps.map((y, ind) => (
-                    <div key={ind} className="flex gap-3">
-                        <h1 className="font-extrabold">{y.sender_user.name}</h1>
-                        <h1 className="">{y.message}</h1>
-                    </div>
-                ))
-            ) : (
-                <h1>start chatting nigger</h1>
-            )}
+            <div className="flex w-full justify-center">
+                <div className="w-11/12 pb-40">
+                    {yap && yap.length > 0 ? (
+                        yap[0].yaps.map((y: any, ind: any) => (
+                            <div
+                                key={ind}
+                                className={`${y.sender_user.id === auth.user.id && 'ms-auto'} mb-3 w-1/2 rounded-lg bg-white/20 p-3 text-sm break-words`}
+                            >
+                                <h1 className="font-extrabold">{y.sender_user.name}</h1>
+                                <h1 className="">{y.message}</h1>
+                            </div>
+                        ))
+                    ) : (
+                        <h1>Start chatting!!!</h1>
+                    )}
+                </div>
+            </div>
+            <form onSubmit={(e) => handleSend(e)} className="fixed bottom-1/12 flex h-1/12 w-full items-center justify-center gap-3 backdrop-blur-sm">
+                <input value={data.message} onChange={(e) => setData('message', e.target.value)} className="rounded-lg bg-[#11998e] p-1 ps-2" />
+                <button type="submit" className="rounded-md bg-[#11998e] px-3 py-1 text-sm font-bold text-white">
+                    send
+                </button>
+            </form>
         </YapLayout>
     );
 }
