@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
         $user1 = auth()->id();
         $user2 = $request->id;
 
-        $yaps = Conversation::with('yaps')->where(function($q) use ($user1, $user2) {
+        $yaps = Conversation::with(['yaps' => function($q) {$q->with("sender_user");}])->where(function($q) use ($user1, $user2) {
             $q->where('sender_id', $user1)->where('receiver_id', $user2);
         })->orWhere(function($q) use ($user1, $user2) {
             $q->where('sender_id', $user2)->where('receiver_id', $user1);
