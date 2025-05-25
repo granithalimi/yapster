@@ -41,7 +41,7 @@ function my_notifs({ notifs }: any) {
                         notif.map((n: any, ind: any) => (
                             <a
                                 key={ind}
-                                href={route('dashboard')}
+                                href={route('yaps.show', n.notifs.id)}
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
@@ -51,16 +51,18 @@ function my_notifs({ notifs }: any) {
                                     <div className="flex h-full items-center justify-between">
                                         <h1 className="font-extrabold">{n.notifs.name}</h1>
                                     </div>
-                                    <form onSubmit={(e) => handleRemove(e, n.id)} className="flex h-full items-center gap-3 text-sm">
-                                        <button type="submit" className="me-3 rounded-lg bg-gray-500 px-3 py-1 font-bold">
-                                            remove
-                                        </button>
-                                    </form>
-                                    <form onSubmit={(e) => handleAccept(e, n.id)} className="flex h-full items-center gap-3 text-sm">
-                                        <button type="submit" className="me-3 rounded-lg bg-gray-500 px-3 py-1 font-bold">
-                                            accept
-                                        </button>
-                                    </form>
+                                    <div className="me-2 flex items-center gap-1 text-sm">
+                                        <form onSubmit={(e) => handleAccept(e, n.id)} className="">
+                                            <button type="submit" className="rounded-lg bg-blue-500 px-3 py-1 font-bold">
+                                                accept
+                                            </button>
+                                        </form>
+                                        <form onSubmit={(e) => handleRemove(e, n.id)} className="">
+                                            <button type="submit" className="rounded-lg bg-gray-500 px-3 py-1 font-bold">
+                                                remove
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </a>
                         ))

@@ -24,25 +24,23 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource("yaps", YapController::class)->only(['index']);
     Route::resource("friends", FriendController::class)->only(['index', 'destroy', 'store', 'update']);
-    Route::get("yaps/{id}", function(Request $request) {
-        // $user1 = auth()->id();
-        // $user2 = $request->id;
-        // $conversations = Conversation::where(function ($query) use ($user1, $user2) {
-        //     $query->where('sender_id', $user1)
-        //     ->where('receiver_id', $user2);
-        //     })->orWhere(function ($query) use ($user1, $user2) {
-        //     $query->where('sender_id', $user2)
-        //     ->where('receiver_id', $user1);
-        //     })
-        //     ->orderBy('created_at', 'asc') // optional: chronological order
-        //     ->get();
 
-        $yaps = Yap::where('sender_id', auth()->id())->orWhere('sender_id', $request->id)->get();
+    Route::get("yaps/{id}", function(Request $request) {
+        $user1 = auth()->id();
+        $user2 = $request->id;
+
+        $yaps = Conversation::with('yaps')->where(function($q) use ($user1, $user2) {
+            $q->where('sender_id', $user1)->where('receiver_id', $user2);
+        })->orWhere(function($q) use ($user1, $user2) {
+            $q->where('sender_id', $user2)->where('receiver_id', $user1);
+        })->get();
+
         return Inertia::render("yap", [
             'yaps' => $yaps,
             "user" => User::find($request->id),
         ]);
     })->name("yaps.show");
+
     Route::get("search/{name}", [SearchController::class, 'searchFriends'])->name("searchFriends");
     Route::get("my_profile", [MyProfileController::class, 'myProfile'])->name("my_profile");
     Route::get("notifs", [NotifsController::class, "myNotifs"])->name("notifs");

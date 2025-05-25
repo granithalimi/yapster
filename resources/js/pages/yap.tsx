@@ -5,12 +5,12 @@ function yap({ user, yaps }: any) {
     console.log(yaps);
     const [yap, setYaps] = useState<any>({});
     useEffect(() => {
-        setYaps(yaps);
+        setYaps(yaps[0]);
     }, [yaps]);
-
+    // fix the bug where there is no convo nor yaps
     return (
         <YapLayout title={`Chatting with ${user.name}`}>
-            {yap && yap.length > 0 && yap.map((y: any, ind: any) => <div key={ind}>{y.message}</div>)}
+            {yap.yaps && yap.yaps.length > 0 && yap.yaps.map((y: any, ind: any) => <div key={ind}>{y.message}</div>)}
         </YapLayout>
     );
 }

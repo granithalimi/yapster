@@ -36,7 +36,7 @@ function search_friends({ searched, search }: any) {
                         friend.map((f: any, ind: any) => (
                             <a
                                 key={ind}
-                                href={route('dashboard')}
+                                href={route('yaps.show', f.id)}
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">

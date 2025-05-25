@@ -5,12 +5,7 @@ import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
 function yaps({ my_convos, auth }: any) {
-    // const cleanup = useMobileNavigation();
-    // const handleLogout = () => {
-    //     cleanup();
-    //     router.flushAll();
-    // };
-    // console.log(my_convos);
+    console.log(my_convos);
     const [convos, setConvos] = useState<any>({});
     useEffect(() => {
         setConvos(my_convos);
@@ -31,7 +26,8 @@ function yaps({ my_convos, auth }: any) {
                         convos.map((convo: any, ind: any) => (
                             <Link
                                 key={ind}
-                                href={route('yaps.show', convo.sender_id)}
+                                // href={route('yaps.show', convo.receiver_id)}
+                                href={convo.sender_id === auth.user.id ? route('yaps.show', convo.receiver_id) : route('yaps.show', convo.sender_id)}
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
