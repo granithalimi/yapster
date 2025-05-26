@@ -1,14 +1,28 @@
 import YapLayout from '@/layouts/yap-layout';
 import { useForm } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 
 function yap({ user, yaps, auth }: any) {
+    useEcho(`message-channel.${auth.user.id}`, 'MessageEvent', (e: any) => {
+        if (yaps.length > 0) {
+            setYaps((p: any) => {
+                let res = [{ message: e.message, sender_user: { id: user.id, name: user.name } }, ...p];
+                return res;
+            });
+        } else {
+            setYaps([{ message: e.message, sender_user: { id: user.id, name: user.name } }]);
+        }
+    });
     console.log(yaps);
     const [yap, setYaps] = useState<any>({});
+
     useEffect(() => {
-        setYaps(yaps);
+        if (yaps.length > 0) {
+            setYaps(yaps[0].yaps);
+        }
     }, [yaps]);
-    // fix the bug where there is no convo nor yaps
+
     const { data, setData, post } = useForm<any>({
         message: '',
         receiverId: user.id,
@@ -26,10 +40,10 @@ function yap({ user, yaps, auth }: any) {
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-40">
                     {yap && yap.length > 0 ? (
-                        yap[0].yaps.map((y: any, ind: any) => (
+                        yap.map((y: any, ind: any) => (
                             <div
                                 key={ind}
-                                className={`${y.sender_user.id === auth.user.id && 'ms-auto'} mb-3 w-1/2 rounded-lg bg-white/20 p-3 text-sm break-words`}
+                                className={`${y.sender_user.id === auth.user.id && 'ms-auto'} mb-3 w-5/12 rounded-lg bg-white/20 p-3 text-sm break-words`}
                             >
                                 <h1 className="font-extrabold">{y.sender_user.name}</h1>
                                 <h1 className="">{y.message}</h1>
