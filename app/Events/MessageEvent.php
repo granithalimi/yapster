@@ -19,11 +19,13 @@ class MessageEvent implements ShouldBroadcast
      */
     public $receiver_id;
     public $message;
+    public $sender_id;
     public function __construct(string $message, int $receiver_id)
     {
         //
         $this->message = $message;
         $this->receiver_id = $receiver_id;
+        $this->sender_id = auth()->id();
     }
 
     /**

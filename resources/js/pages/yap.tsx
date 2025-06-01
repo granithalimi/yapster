@@ -5,13 +5,16 @@ import { useEffect, useState } from 'react';
 
 function yap({ user, yaps, auth }: any) {
     useEcho(`message-channel.${auth.user.id}`, 'MessageEvent', (e: any) => {
-        if (yaps.length > 0) {
+        if (e.sender_id === user.id) {
             setYaps((p: any) => {
-                let res = [{ message: e.message, sender_user: { id: user.id, name: user.name } }, ...p];
-                return res;
+                if (p.length > 0) {
+                    let res = [{ message: e.message, sender_user: { id: user.id, name: user.name } }, ...p];
+                    return res;
+                } else {
+                    let res = [{ message: e.message, sender_user: { id: user.id, name: user.name } }];
+                    return res;
+                }
             });
-        } else {
-            setYaps([{ message: e.message, sender_user: { id: user.id, name: user.name } }]);
         }
     });
     console.log(yaps);
