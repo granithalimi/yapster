@@ -17,7 +17,6 @@ function yap({ user, yaps, auth }: any) {
             });
         }
     });
-    console.log(yaps);
     const [yap, setYaps] = useState<any>({});
 
     useEffect(() => {

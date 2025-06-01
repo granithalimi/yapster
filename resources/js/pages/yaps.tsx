@@ -1,12 +1,30 @@
 import YapLayout from '@/layouts/yap-layout';
 import { Link } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
 function yaps({ my_convos, auth }: any) {
-    console.log(my_convos);
-    const [convos, setConvos] = useState<any>({});
+    useEcho(`message-channel.${auth.user.id}`, 'MessageEvent', (e: any) => {
+        // check if the convo exists
+        setConvos((p: any) => {
+            const convo = p.find((c: any) => c.sender_id == e.sender_id || c.receiver_id == e.sender_id);
+            if (convo) {
+                convo.yaps[0].message = e.message;
+                return [...p];
+            } else {
+                const new_convo = {
+                    sender_id: e.sender_id,
+                    receiver_id: auth.user.id,
+                    yaps: [{ message: e.message, receiver_user: { name: auth.user.name }, sender_user: { name: e.sender_name } }],
+                };
+                return [new_convo, ...p];
+            }
+        });
+    });
+
+    const [convos, setConvos] = useState<any[]>([]);
     useEffect(() => {
         setConvos(my_convos);
     }, [my_convos]);
