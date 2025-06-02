@@ -1,10 +1,27 @@
 import YapLayout from '@/layouts/yap-layout';
 import { useForm } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 
-function my_notifs({ notifs }: any) {
+function my_notifs({ auth, notifs }: any) {
+    useEcho(`notif-channel.${auth.user.id}`, 'NotifsEvent', (e: any) => {
+        if (e.notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    });
+
     const [notif, setNotifs] = useState<any>({});
+    const [haveNotifs, setHaveNotifs] = useState<boolean>(false);
+    useEffect(() => {
+        if (notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    }, [notifs]);
     const {
         data,
         setData,
@@ -36,7 +53,7 @@ function my_notifs({ notifs }: any) {
         }
     };
     return (
-        <YapLayout title={'Notifications'} notifs={notifs.length > 0 ? true : false}>
+        <YapLayout title={'Notifications'} notifs={haveNotifs}>
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-20">
                     {notif && notif.length > 0 ? (

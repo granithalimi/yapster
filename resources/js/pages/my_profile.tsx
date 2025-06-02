@@ -1,11 +1,19 @@
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import YapLayout from '@/layouts/yap-layout';
 import { Link, router, useForm } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import { LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 
 function my_profile({ auth, following, followers, notifs }: any) {
+    useEcho(`notif-channel.${auth.user.id}`, 'NotifsEvent', (e: any) => {
+        if (e.notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    });
     const cleanup = useMobileNavigation();
     const [followersDiv, setFollowersDiv] = useState(false);
     const [followingDiv, setFollowingDiv] = useState(false);
@@ -13,6 +21,15 @@ function my_profile({ auth, following, followers, notifs }: any) {
     const [follower, setFollowers] = useState<any>({});
 
     const { data, setData, delete: destroy } = useForm<any>();
+
+    const [haveNotifs, setHaveNotifs] = useState<boolean>(false);
+    useEffect(() => {
+        if (notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    }, [notifs]);
 
     useEffect(() => {
         setFollowing(following);
@@ -43,7 +60,7 @@ function my_profile({ auth, following, followers, notifs }: any) {
     };
     // console.log(followers);
     return (
-        <YapLayout title={'My Profile'} notifs={notifs.length > 0 ? true : false}>
+        <YapLayout title={'My Profile'} notifs={haveNotifs}>
             <div className="flex w-full justify-center pb-4">
                 <div className={`${followersDiv || followingDiv ? 'rounded-t-lg' : 'rounded-lg'} relative flex h-40 w-11/12 bg-white/20`}>
                     <div className={`${followersDiv ? '' : 'hidden'} absolute top-full h-60 w-full overflow-auto rounded-b-lg bg-white/20`}>

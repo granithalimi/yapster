@@ -1,11 +1,28 @@
 import YapLayout from '@/layouts/yap-layout';
 import { useForm } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
 function friends({ friends, auth, notifs }: any) {
+    useEcho(`notif-channel.${auth.user.id}`, 'NotifsEvent', (e: any) => {
+        if (e.notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    });
+
     const [friend, setFriends] = useState<any>({});
+    const [haveNotifs, setHaveNotifs] = useState<boolean>(false);
+    useEffect(() => {
+        if (notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    }, [notifs]);
     const {
         data,
         setData,
@@ -27,7 +44,7 @@ function friends({ friends, auth, notifs }: any) {
     };
 
     return (
-        <YapLayout title={'My Friends'} notifs={notifs.length > 0 ? true : false}>
+        <YapLayout title={'My Friends'} notifs={haveNotifs}>
             <div className="flex w-full justify-center pb-4">
                 <form action={route('searchFriends', data.name)} className="relative w-11/12">
                     <input

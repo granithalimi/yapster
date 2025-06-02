@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Broadcast;
 //     return (int) $user->id === (int) $id;
 // });
 Broadcast::channel('message-channel.{id}', function ($user, $id) {
-    // return auth()->check();
+    return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('notif-channel.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });

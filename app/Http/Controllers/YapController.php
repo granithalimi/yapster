@@ -6,6 +6,7 @@ use App\Models\Yap;
 use Inertia\Inertia;
 use App\Models\Friend;
 use App\Events\MessageEvent;
+use App\Events\NotifsEvent;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use League\Uri\IPv4\Converter;

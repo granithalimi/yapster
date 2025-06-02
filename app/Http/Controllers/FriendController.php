@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotifsEvent;
 use Inertia\Inertia;
 use App\Models\Friend;
 use Illuminate\Http\Request;
@@ -36,7 +37,9 @@ class FriendController extends Controller
     public function store(Request $request)
     {
         //
-        Friend::create(['sender_id' => auth()->id(), 'receiver_id' => $request->id]);
+        $fq = Friend::create(['sender_id' => auth()->id(), 'receiver_id' => $request->id]);
+        $notifs = Friend::with("notifs")->where("receiver_id", $request->id)->where("status", "pending")->get();
+        broadcast(new NotifsEvent($notifs, $request->id));
         return to_route("friends.index");
         // return dd($request->id);
     }
@@ -75,6 +78,8 @@ class FriendController extends Controller
     {
         //
         Friend::where("id", $friend->id)->first()->delete();
+        $notifs = Friend::with("notifs")->where("receiver_id", $friend->receiver_id)->where("status", "pending")->get();
+        broadcast(new NotifsEvent($notifs, $friend->receiver_id));
         return redirect()->back();
     }
 }

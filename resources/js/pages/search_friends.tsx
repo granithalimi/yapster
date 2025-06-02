@@ -1,14 +1,30 @@
 import YapLayout from '@/layouts/yap-layout';
 import { Head, useForm } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 
-function search_friends({ searched, search, notifs }: any) {
-    console.log(searched);
+function search_friends({ searched, search, auth, notifs }: any) {
+    useEcho(`notif-channel.${auth.user.id}`, 'NotifsEvent', (e: any) => {
+        if (e.notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    });
+
     const { data, setData, post, delete: destroy } = useForm<any>();
     const [friend, setFriends] = useState<any>({
         id: '',
     });
+    const [haveNotifs, setHaveNotifs] = useState<boolean>(false);
+    useEffect(() => {
+        if (notifs.length > 0) {
+            setHaveNotifs((p) => true);
+        } else {
+            setHaveNotifs((p) => false);
+        }
+    }, [notifs]);
 
     useEffect(() => {
         setFriends(searched);
@@ -28,7 +44,7 @@ function search_friends({ searched, search, notifs }: any) {
         }
     };
     return (
-        <YapLayout title={'Searched Friend'} notifs={notifs.length > 0 ? true : false}>
+        <YapLayout title={'Searched Friend'} notifs={haveNotifs}>
             <Head title={'Searched Friends'} />
             <div className="flex w-full justify-center pb-4">
                 <div className="w-11/12 pb-20">
