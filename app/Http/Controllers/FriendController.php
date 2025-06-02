@@ -15,8 +15,10 @@ class FriendController extends Controller
     {
         //
         $my_friends = Friend::with('users')->where("sender_id", auth()->id())->where("status", "accepted")->get();
+        $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
         return Inertia::render("friends", [
             'friends' => $my_friends,
+            'notifs' => $notifs,
         ]);
     }
 

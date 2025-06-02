@@ -3,6 +3,8 @@
 use App\Models\Yap;
 use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Friend;
+use App\Models\Conversation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\YapController;
@@ -10,7 +12,6 @@ use App\Http\Controllers\FriendController;
 use App\Http\Controllers\NotifsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MyProfileController;
-use App\Models\Conversation;
 
 Route::get('/', function () {
     // return Inertia::render('welcome');
@@ -28,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get("yaps/{id}", function(Request $request) {
         $user1 = auth()->id();
         $user2 = $request->id;
+        $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
 
         $yaps = Conversation::with(['yaps' => function($q) {$q->with("sender_user")->orderBy('created_at', 'desc');}])->where(function($q) use ($user1, $user2) {
             $q->where('sender_id', $user1)->where('receiver_id', $user2);
@@ -38,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render("yap", [
             'yaps' => $yaps,
             "user" => User::find($request->id),
+            'notifs' => $notifs,
         ]);
     })->name("yaps.show");
 

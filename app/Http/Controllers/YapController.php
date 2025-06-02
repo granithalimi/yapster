@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageEvent;
 use App\Models\Yap;
 use Inertia\Inertia;
+use App\Models\Friend;
+use App\Events\MessageEvent;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use League\Uri\IPv4\Converter;
+use App\Http\Controllers\Controller;
 
 class YapController extends Controller
 {
@@ -25,8 +26,10 @@ class YapController extends Controller
         ->orWhere('receiver_id', auth()->id())
         ->get();
 
+        $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
         return Inertia::render("yaps", [
             "my_convos" => $my_convo,
+            "notifs" => $notifs,
         ]);
     }
 

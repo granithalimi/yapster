@@ -5,7 +5,7 @@ import { MdNotificationsNone } from 'react-icons/md';
 import whitelogo from '../../assets/images/yapster_white_logo.png';
 import '../../assets/style/style.css';
 
-function YapLayout({ children, title }: any) {
+function YapLayout({ children, title, notifs }: any) {
     return (
         <div className="roboto_ min-h-screen min-w-full bg-gradient-to-br from-[#2EE59D] to-[#11998e] md:flex">
             {/* Pc fix this shittt.... */}
@@ -26,7 +26,7 @@ function YapLayout({ children, title }: any) {
                     <CgProfile className="text-3xl" />
                     <p className="m-0 text-center text-sm">Profile</p>
                 </Link>
-                <Link className="flex flex-col items-center justify-center gap-3 lg:flex-row" href={route('my_profile')}>
+                <Link className="flex flex-col items-center justify-center gap-3 lg:flex-row" href={route('notifs')}>
                     <MdNotificationsNone className="text-3xl" />
                     <p className="m-0 text-center text-sm">Notifications</p>
                 </Link>
@@ -55,7 +55,7 @@ function YapLayout({ children, title }: any) {
                 </Link> */}
                 <Link className="relative flex w-1/4 flex-col items-center" href={route('notifs')}>
                     <MdNotificationsNone className="relative text-3xl" />
-                    <span className="absolute top-0 left-[52%] rounded-full bg-red-500 p-[5px]"></span>
+                    <span className={`${notifs ? 'absolute' : 'hidden'} top-0 left-[52%] rounded-full bg-red-500 p-[5px]`}></span>
                     <p className="m-0 text-center text-xs">Notifications</p>
                 </Link>
                 <Link className="flex w-1/4 flex-col items-center" href={route('friends.index')}>

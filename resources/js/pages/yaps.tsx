@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
-function yaps({ my_convos, auth }: any) {
+function yaps({ my_convos, auth, notifs }: any) {
     useEcho(`message-channel.${auth.user.id}`, 'MessageEvent', (e: any) => {
         // check if the convo exists
         setConvos((p: any) => {
@@ -30,7 +30,7 @@ function yaps({ my_convos, auth }: any) {
     }, [my_convos]);
 
     return (
-        <YapLayout title="Yaps">
+        <YapLayout title="Yaps" notifs={notifs.length > 0 ? true : false}>
             <div className="flex w-full justify-center pb-4">
                 <div className="relative w-11/12">
                     <input className="w-full rounded-xl bg-white/20 py-1 ps-7 text-black backdrop-blur-2xl" placeholder={`Search Yaps...`} />

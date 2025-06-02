@@ -3,7 +3,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 
-function search_friends({ searched, search }: any) {
+function search_friends({ searched, search, notifs }: any) {
     console.log(searched);
     const { data, setData, post, delete: destroy } = useForm<any>();
     const [friend, setFriends] = useState<any>({
@@ -28,7 +28,7 @@ function search_friends({ searched, search }: any) {
         }
     };
     return (
-        <YapLayout title={'Searched Friend'}>
+        <YapLayout title={'Searched Friend'} notifs={notifs.length > 0 ? true : false}>
             <Head title={'Searched Friends'} />
             <div className="flex w-full justify-center pb-4">
                 <div className="w-11/12 pb-20">

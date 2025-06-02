@@ -14,7 +14,9 @@ function my_notifs({ notifs }: any) {
         status: 'accept',
     });
     useEffect(() => {
-        setNotifs(notifs);
+        setNotifs((p: any) => {
+            return notifs;
+        });
         setData('status', 'accepted');
     }, [notifs]);
 
@@ -34,7 +36,7 @@ function my_notifs({ notifs }: any) {
         }
     };
     return (
-        <YapLayout title={'Notifications'}>
+        <YapLayout title={'Notifications'} notifs={notifs.length > 0 ? true : false}>
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-20">
                     {notif && notif.length > 0 ? (

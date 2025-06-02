@@ -10,9 +10,11 @@ class MyProfileController extends Controller
 {
     //
     public function myProfile() {
+        $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
         return Inertia::render("my_profile", [
             'following' => Friend::with('users')->where("sender_id", auth()->id())->get(),
             'followers' => Friend::with('notifs')->where("receiver_id", auth()->id())->where("status", "accepted")->get(), 
+            'notifs' => $notifs,
         ]);
     }
 }

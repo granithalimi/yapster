@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 
-function yap({ user, yaps, auth }: any) {
+function yap({ user, yaps, auth, notifs }: any) {
     useEcho(`message-channel.${auth.user.id}`, 'MessageEvent', (e: any) => {
         if (e.sender_id === user.id) {
             setYaps((p: any) => {
@@ -38,7 +38,7 @@ function yap({ user, yaps, auth }: any) {
         });
     };
     return (
-        <YapLayout title={`Chatting with ${user.name}`}>
+        <YapLayout title={`Chatting with ${user.name}`} notifs={notifs.length > 0 ? true : false}>
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-40">
                     {yap && yap.length > 0 ? (

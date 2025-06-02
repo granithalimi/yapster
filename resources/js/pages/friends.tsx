@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
-function friends({ friends, auth }: any) {
-    console.log(friends);
+function friends({ friends, auth, notifs }: any) {
     const [friend, setFriends] = useState<any>({});
     const {
         data,
@@ -28,7 +27,7 @@ function friends({ friends, auth }: any) {
     };
 
     return (
-        <YapLayout title={'My Friends'}>
+        <YapLayout title={'My Friends'} notifs={notifs.length > 0 ? true : false}>
             <div className="flex w-full justify-center pb-4">
                 <form action={route('searchFriends', data.name)} className="relative w-11/12">
                     <input

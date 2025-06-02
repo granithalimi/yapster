@@ -5,7 +5,7 @@ import { LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 
-function my_profile({ auth, following, followers }: any) {
+function my_profile({ auth, following, followers, notifs }: any) {
     const cleanup = useMobileNavigation();
     const [followersDiv, setFollowersDiv] = useState(false);
     const [followingDiv, setFollowingDiv] = useState(false);
@@ -24,12 +24,12 @@ function my_profile({ auth, following, followers }: any) {
         router.flushAll();
     };
 
-    const handleFollowersClick = (e) => {
+    const handleFollowersClick = (e: any) => {
         setFollowingDiv(false);
         setFollowersDiv(!followersDiv);
     };
 
-    const handleFollowingClick = (e) => {
+    const handleFollowingClick = (e: any) => {
         setFollowersDiv(false);
         setFollowingDiv(!followingDiv);
     };
@@ -43,7 +43,7 @@ function my_profile({ auth, following, followers }: any) {
     };
     // console.log(followers);
     return (
-        <YapLayout title={'My Profile'}>
+        <YapLayout title={'My Profile'} notifs={notifs.length > 0 ? true : false}>
             <div className="flex w-full justify-center pb-4">
                 <div className={`${followersDiv || followingDiv ? 'rounded-t-lg' : 'rounded-lg'} relative flex h-40 w-11/12 bg-white/20`}>
                     <div className={`${followersDiv ? '' : 'hidden'} absolute top-full h-60 w-full overflow-auto rounded-b-lg bg-white/20`}>
