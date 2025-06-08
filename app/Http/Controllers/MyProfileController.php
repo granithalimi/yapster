@@ -19,14 +19,19 @@ class MyProfileController extends Controller
         ]);
     }
     public function updateProfile(Request $request){
-        $request->validate([
-            "image" => "required|image"
-        ]);
         if($request->hasFile('image')){
             $path = $request->file("image")->store("images", "public");
+            $profile = str_replace('images/', '', $path); 
+            User::find(auth()->id())->update(['name' => $request->name, 'phone' =>  $request->phone,'profile' => $profile]);
+        }else{
+            User::find(auth()->id())->update(['name' => $request->name, 'phone' =>  $request->phone]);
         }
-        $profile = str_replace('images/', '', $path); 
-        User::find(auth()->id())->update(['profile' => $profile]);
-        return redirect()->back();
+        return to_route("my_profile.edit");
+    }
+    public function editProfile(){
+        $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
+        return Inertia::render("edit_profile", [
+            'notifs' => $notifs,
+        ]);
     }
 }
