@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Friend;
 use Illuminate\Http\Request;
@@ -18,11 +19,14 @@ class MyProfileController extends Controller
         ]);
     }
     public function updateProfile(Request $request){
-        // $request->validate([
-        //     'image' => 'required|image',
-        // ]);
-        $path = $request->file('image');
-        // $path = $request->file('image')->store('images', 'public');
-        return dd($path);
+        $request->validate([
+            "image" => "required|image"
+        ]);
+        if($request->hasFile('image')){
+            $path = $request->file("image")->store("images", "public");
+        }
+        $profile = str_replace('images/', '', $path); 
+        User::find(auth()->id())->update(['profile' => $profile]);
+        return redirect()->back();
     }
 }

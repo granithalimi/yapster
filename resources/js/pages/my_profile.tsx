@@ -27,10 +27,10 @@ function my_profile({ auth, following, followers, notifs }: any) {
     const {
         data,
         setData,
-        put,
+        post,
         delete: destroy,
     } = useForm<any>({
-        image: '',
+        image: null,
     });
 
     const capture = (e: any) => {
@@ -75,9 +75,8 @@ function my_profile({ auth, following, followers, notifs }: any) {
     };
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        put(route('my_profile.update'));
+        post(route('my_profile.update'));
     };
-    // console.log(followers);
     return (
         <YapLayout title={'My Profile'} notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center pb-4">
@@ -166,7 +165,7 @@ function my_profile({ auth, following, followers, notifs }: any) {
             <form encType="multipart/form-data" className="flex flex-col items-center" onSubmit={(e) => handleSubmit(e)}>
                 <input
                     type="file"
-                    onChange={(e) => setData('image', e.target.value)}
+                    onChange={(e: any) => setData('image', e.target.files[0])}
                     className="w-44 rounded-lg bg-white py-3 ps-1 text-sm text-black"
                 />
                 <button>Update</button>
