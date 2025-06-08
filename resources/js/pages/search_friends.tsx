@@ -44,7 +44,7 @@ function search_friends({ searched, search, auth, notifs }: any) {
         }
     };
     return (
-        <YapLayout title={'Searched Friend'} notifs={haveNotifs}>
+        <YapLayout title={'Searched Friend'} notifs={haveNotifs} auth={auth}>
             <Head title={'Searched Friends'} />
             <div className="flex w-full justify-center pb-4">
                 <div className="w-11/12 pb-20">

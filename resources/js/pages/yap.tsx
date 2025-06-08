@@ -54,7 +54,7 @@ function yap({ user, yaps, auth, notifs }: any) {
         });
     };
     return (
-        <YapLayout title={`Chatting with ${user.name}`} notifs={haveNotifs}>
+        <YapLayout title={`Chatting with ${user.name}`} notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-40">
                     {yap && yap.length > 0 ? (

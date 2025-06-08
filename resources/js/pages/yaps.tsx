@@ -47,7 +47,7 @@ function yaps({ my_convos, auth, notifs }: any) {
     }, [notifs]);
 
     return (
-        <YapLayout title="Yaps" notifs={haveNotifs}>
+        <YapLayout title="Yaps" notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center pb-4">
                 <div className="relative w-11/12">
                     <input className="w-full rounded-xl bg-white/20 py-1 ps-7 text-black backdrop-blur-2xl" placeholder={`Search Yaps...`} />

@@ -53,7 +53,7 @@ function my_notifs({ auth, notifs }: any) {
         }
     };
     return (
-        <YapLayout title={'Notifications'} notifs={haveNotifs}>
+        <YapLayout title={'Notifications'} notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-20">
                     {notif && notif.length > 0 ? (

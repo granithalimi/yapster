@@ -5,7 +5,7 @@ import { MdNotificationsNone } from 'react-icons/md';
 import whitelogo from '../../assets/images/yapster_white_logo.png';
 import '../../assets/style/style.css';
 
-function YapLayout({ children, title, notifs }: any) {
+function YapLayout({ children, title, notifs, auth }: any) {
     return (
         <div className="roboto_ min-h-screen min-w-full bg-gradient-to-br from-[#2EE59D] to-[#11998e] md:flex">
             {/* Pc fix this shittt.... */}
@@ -67,7 +67,12 @@ function YapLayout({ children, title, notifs }: any) {
                     <p className="text-xs">Yaps</p>
                 </Link>
                 <Link className="flex w-1/4 flex-col items-center" href={route('my_profile')}>
-                    <CgProfile className="text-3xl" />
+                    <img
+                        src={`${window.location.origin}/storage/images/${auth.user.profile}`}
+                        alt="profile_pic"
+                        className="h-8 w-8 rounded-full object-cover"
+                    />
+                    {/* <img src={`${window.location.origin}/storage/images/${auth.user.profile}`} alt="profile_pic" className="h-8 w-8" /> */}
                     <p className="m-0 text-center text-xs">Profile</p>
                 </Link>
             </div>

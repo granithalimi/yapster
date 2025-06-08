@@ -44,7 +44,7 @@ function friends({ friends, auth, notifs }: any) {
     };
 
     return (
-        <YapLayout title={'My Friends'} notifs={haveNotifs}>
+        <YapLayout title={'My Friends'} notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center pb-4">
                 <form action={route('searchFriends', data.name)} className="relative w-11/12">
                     <input
