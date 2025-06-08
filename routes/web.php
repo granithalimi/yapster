@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get("search/{name}", [SearchController::class, 'searchFriends'])->name("searchFriends");
     Route::get("my_profile", [MyProfileController::class, 'myProfile'])->name("my_profile");
+    Route::put("my_profile", [MyProfileController::class, 'updateProfile'])->name("my_profile.update");
     Route::get("notifs", [NotifsController::class, "myNotifs"])->name("notifs");
 });
 

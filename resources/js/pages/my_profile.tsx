@@ -3,9 +3,9 @@ import YapLayout from '@/layouts/yap-layout';
 import { Link, router, useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { LogOut } from 'lucide-react';
-import { useEffect, useState, useRef } from 'react';
-import { IoMdClose } from "react-icons/io";
-import Webcam from 'react-webcam'
+import { useEffect, useRef, useState } from 'react';
+import { IoMdClose } from 'react-icons/io';
+import Webcam from 'react-webcam';
 
 function my_profile({ auth, following, followers, notifs }: any) {
     useEcho(`notif-channel.${auth.user.id}`, 'NotifsEvent', (e: any) => {
@@ -24,11 +24,18 @@ function my_profile({ auth, following, followers, notifs }: any) {
     const [imgSrc, setImgSrc] = useState<any>(null);
     const webRef = useRef(null);
 
-    const { data, setData, delete: destroy } = useForm<any>();
+    const {
+        data,
+        setData,
+        put,
+        delete: destroy,
+    } = useForm<any>({
+        image: '',
+    });
 
-    const capture = (e : any) => {
-        setImgSrc(e.getScreenshot())
-    }
+    const capture = (e: any) => {
+        setImgSrc(e.getScreenshot());
+    };
 
     const [haveNotifs, setHaveNotifs] = useState<boolean>(false);
     useEffect(() => {
@@ -66,6 +73,10 @@ function my_profile({ auth, following, followers, notifs }: any) {
             destroy(route('friends.destroy', id));
         }
     };
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        put(route('my_profile.update'));
+    };
     // console.log(followers);
     return (
         <YapLayout title={'My Profile'} notifs={haveNotifs} auth={auth}>
@@ -96,7 +107,7 @@ function my_profile({ auth, following, followers, notifs }: any) {
                             ))}
                     </div>
                     <div className="flex h-full w-2/6 flex-col items-center justify-center gap-2">
-                        <button onClick={e => setCamera((p:any) => !p)}>
+                        <button onClick={(e) => setCamera((p: any) => !p)}>
                             <img
                                 src={`${window.location.origin}/storage/images/${auth.user.profile}`}
                                 alt="profile_pic"
@@ -134,22 +145,32 @@ function my_profile({ auth, following, followers, notifs }: any) {
                 </div>
             </div>
 
-            <div className={`${(camera) ? "fixed" : "hidden"} flex justify-center items-center bg-black/40 w-screen h-screen top-0`}>
-                {camera && 
-                <div className={`w-10/12 rounded-xl bg-green-400 flex pt-4 gap-5 flex-col items-end justify-center`}>
-                    <IoMdClose onClick={e => setCamera((p:any) => !p)} className='text-3xl pe-3'/>
-                <Webcam className={`${(imgSrc) ? "hidden" : "block"} w-full`} screenshotFormat='image/jpeg' audio={false} ref={webRef} />
-                    {imgSrc && 
-                        <img src={imgSrc} />
-                    }
-                <div className='w-full flex justify-around pb-4'>
-                    <button className={`${(imgSrc) ? "hidden" : "block"} text-center`} onClick={e => capture(webRef.current)}>take the shit</button>
-                    <button className={`${(imgSrc) ? "block" : "hidden"} text-center`}>post</button>
-                    <button className={`${(imgSrc) ? "block" : "hidden"} text-center`} onClick={e => setImgSrc((p:any) => false)}>take another</button>
-                </div>
-                </div>
-                }
+            <div className={`${camera ? 'fixed' : 'hidden'} top-0 flex h-screen w-screen items-center justify-center bg-black/40`}>
+                {camera && (
+                    <div className={`flex w-10/12 flex-col items-end justify-center gap-5 rounded-xl bg-green-400 pt-4`}>
+                        <IoMdClose onClick={(e) => setCamera((p: any) => !p)} className="pe-3 text-3xl" />
+                        <Webcam className={`${imgSrc ? 'hidden' : 'block'} w-full`} screenshotFormat="image/jpeg" audio={false} ref={webRef} />
+                        {imgSrc && <img src={imgSrc} />}
+                        <div className="flex w-full justify-around pb-4">
+                            <button className={`${imgSrc ? 'hidden' : 'block'} text-center`} onClick={(e) => capture(webRef.current)}>
+                                take the shit
+                            </button>
+                            <button className={`${imgSrc ? 'block' : 'hidden'} text-center`}>post</button>
+                            <button className={`${imgSrc ? 'block' : 'hidden'} text-center`} onClick={(e) => setImgSrc((p: any) => false)}>
+                                take another
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
+            <form encType="multipart/form-data" className="flex flex-col items-center" onSubmit={(e) => handleSubmit(e)}>
+                <input
+                    type="file"
+                    onChange={(e) => setData('image', e.target.value)}
+                    className="w-44 rounded-lg bg-white py-3 ps-1 text-sm text-black"
+                />
+                <button>Update</button>
+            </form>
         </YapLayout>
     );
 }

@@ -17,4 +17,12 @@ class MyProfileController extends Controller
             'notifs' => $notifs,
         ]);
     }
+    public function updateProfile(Request $request){
+        // $request->validate([
+        //     'image' => 'required|image',
+        // ]);
+        $path = $request->file('image');
+        // $path = $request->file('image')->store('images', 'public');
+        return dd($path);
+    }
 }
