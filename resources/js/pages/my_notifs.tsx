@@ -1,5 +1,5 @@
 import YapLayout from '@/layouts/yap-layout';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 
@@ -57,21 +57,20 @@ function my_notifs({ auth, notifs }: any) {
                 <div className="w-11/12 pb-20">
                     {notif && notif.length > 0 ? (
                         notif.map((n: any, ind: any) => (
-                            <a
+                            <div
                                 key={ind}
-                                href={route('yaps.show', n.notifs.id)}
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
-                                <div className="flex h-20 w-20 items-center justify-center">
+                                <Link href={route('other_profile', n.notifs.id)} className="flex h-20 w-20 items-center justify-center">
                                     <img
                                         className="h-12 w-12 rounded-full object-cover"
                                         src={`${window.location.origin}/storage/images/${n.notifs.profile}`}
                                     />
-                                </div>
+                                </Link>
                                 <div className="flex h-full w-full justify-between">
-                                    <div className="flex h-full items-center justify-between">
+                                    <Link href={route('yaps.show', n.notifs.id)} className="flex h-full w-full items-center justify-between">
                                         <h1 className="font-extrabold">{n.notifs.name}</h1>
-                                    </div>
+                                    </Link>
                                     <div className="me-2 flex items-center gap-1 text-sm">
                                         <form onSubmit={(e) => handleAccept(e, n.id)} className="">
                                             <button type="submit" className="rounded-lg bg-blue-500 px-3 py-1 font-bold">
@@ -85,7 +84,7 @@ function my_notifs({ auth, notifs }: any) {
                                         </form>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         ))
                     ) : (
                         <h1>No Notifications :(</h1>

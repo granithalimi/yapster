@@ -32,6 +32,12 @@ function yaps({ my_convos, auth, notifs }: any) {
     });
 
     const [convos, setConvos] = useState<any[]>([]);
+    const [searchYaps, setSearchYaps] = useState<any>('');
+
+    useEffect(() => {
+        setConvos(my_convos.filter((c: any) => c.yaps[0].sender_user.name.toLowerCase().includes(searchYaps.toLowerCase())));
+    }, [searchYaps]);
+
     useEffect(() => {
         setConvos(my_convos);
     }, [my_convos]);
@@ -49,7 +55,11 @@ function yaps({ my_convos, auth, notifs }: any) {
         <YapLayout title="Yaps" notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center pb-4">
                 <div className="relative w-11/12">
-                    <input className="w-full rounded-xl bg-white/20 py-1 ps-7 text-black backdrop-blur-2xl" placeholder={`Search Yaps...`} />
+                    <input
+                        onChange={(e) => setSearchYaps((p: any) => e.target.value)}
+                        className="w-full rounded-xl bg-white/20 py-1 ps-7 text-black backdrop-blur-2xl"
+                        placeholder={`Search Yaps...`}
+                    />
                     <FaSearch className="absolute top-1/2 left-2 -translate-y-1/2 text-[#11998e]" />
                 </div>
             </div>

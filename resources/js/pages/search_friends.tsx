@@ -1,5 +1,5 @@
 import YapLayout from '@/layouts/yap-layout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 
@@ -48,22 +48,22 @@ function search_friends({ searched, search, auth, notifs }: any) {
                 <div className="w-11/12 pb-20">
                     {friend && friend.length > 0 ? (
                         friend.map((f: any, ind: any) => (
-                            <a
+                            <div
                                 key={ind}
-                                href={route('yaps.show', f.id)}
+                                //
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
-                                <div className="flex h-20 w-20 items-center justify-center">
+                                <Link href={route('other_profile', f.id)} className="flex h-20 w-20 items-center justify-center">
                                     <img
                                         className="h-12 w-12 rounded-full object-cover"
                                         src={`${window.location.origin}/storage/images/${f.profile}`}
                                     />
-                                </div>
-                                <div className="flex h-full w-full justify-between">
-                                    <div className="flex h-full items-center justify-between">
+                                </Link>
+                                <div className="flex h-full w-full items-center justify-between">
+                                    <Link href={route('yaps.show', f.id)} className="flex h-full w-full items-center justify-between">
                                         <h1 className="font-extrabold">{f.name}</h1>
-                                    </div>
-                                    <div className="flex h-full items-center gap-3 text-sm">
+                                    </Link>
+                                    <div className="flex h-full items-center text-sm">
                                         {f.friend.length > 0 ? (
                                             f.friend[0].status == 'accepted' ? (
                                                 <form
@@ -71,13 +71,13 @@ function search_friends({ searched, search, auth, notifs }: any) {
                                                     className="flex h-full items-center gap-3 text-sm"
                                                 >
                                                     <button type="submit" className="me-3 rounded-lg bg-gray-500 px-3 py-1 font-bold">
-                                                        remove
+                                                        Remove
                                                     </button>
                                                 </form>
                                             ) : (
                                                 <form onSubmit={(e) => handleRemove(e, f.friend[0].id)}>
                                                     <button type="submit" className="me-3 rounded-lg bg-[coral] px-3 py-1 font-bold">
-                                                        pending
+                                                        Pending
                                                     </button>
                                                 </form>
                                             )
@@ -85,7 +85,7 @@ function search_friends({ searched, search, auth, notifs }: any) {
                                             <form onSubmit={(e) => handleAddFriend(e, f.id)}>
                                                 <button
                                                     type="submit"
-                                                    className="me-3 rounded-lg bg-blue-500 px-3 py-1 font-bold"
+                                                    className="me-3 rounded-lg bg-blue-500 px-2 py-1 font-bold whitespace-nowrap"
                                                     onClick={(e) => setData('id', f.id)}
                                                 >
                                                     Add Friend
@@ -94,7 +94,7 @@ function search_friends({ searched, search, auth, notifs }: any) {
                                         )}
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         ))
                     ) : (
                         <h1>No such users with the name of {search}</h1>
