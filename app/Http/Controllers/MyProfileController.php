@@ -21,11 +21,12 @@ class MyProfileController extends Controller
     public function otherProfile(Request $request) {
         $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
         $other_user = User::find($request->id);
-        $status = Friend::where(function($q) use ($other_user) {
-            $q->where("sender_id", auth()->id())->where("receiver_id", $other_user->id);
-        })->orWhere(function($q) use ($other_user) {
-            $q->where("sender_id", $other_user->id)->where("receiver_id", auth()->id());
-        })->get();
+        // $status = Friend::where(function($q) use ($other_user) {
+        //     $q->where("sender_id", auth()->id())->where("receiver_id", $other_user->id);
+        // })->orWhere(function($q) use ($other_user) {
+        //     $q->where("sender_id", $other_user->id)->where("receiver_id", auth()->id());
+        // })->get();
+        $status = Friend::where("sender_id", auth()->id())->where("receiver_id", $other_user->id)->first();
 
         return Inertia::render("other_profile", [
             'following' => Friend::with('users')->where("sender_id", $other_user->id)->get(),

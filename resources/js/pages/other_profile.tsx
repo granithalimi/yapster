@@ -42,7 +42,7 @@ function other_profile({ auth, notifs, following, followers, user, status }: any
     const handleRemove = (e: any) => {
         e.preventDefault();
         if (confirm('Are you sure you want to remove this friend?')) {
-            destroy(route('friends.destroy', status[0].id));
+            destroy(route('friends.destroy', status.id));
         }
     };
 
@@ -90,8 +90,8 @@ function other_profile({ auth, notifs, following, followers, user, status }: any
                             </button>
                         </div>
                         <div className="flex h-1/2 w-full items-center justify-center gap-3">
-                            {status.length > 0 ? (
-                                status[0].status == 'accepted' ? (
+                            {status != null ? (
+                                status.status == 'accepted' ? (
                                     <form onSubmit={(e) => handleRemove(e)} className="flex h-full items-center justify-center text-sm">
                                         <button type="submit" className="rounded-lg bg-gray-400 px-8 py-1 text-sm">
                                             Remove
