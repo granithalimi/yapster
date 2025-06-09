@@ -2,7 +2,6 @@ import YapLayout from '@/layouts/yap-layout';
 import { Head, useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
-import { CgProfile } from 'react-icons/cg';
 
 function search_friends({ searched, search, auth, notifs }: any) {
     useEcho(`notif-channel.${auth.user.id}`, 'NotifsEvent', (e: any) => {
@@ -14,9 +13,7 @@ function search_friends({ searched, search, auth, notifs }: any) {
     });
 
     const { data, setData, post, delete: destroy } = useForm<any>();
-    const [friend, setFriends] = useState<any>({
-        id: '',
-    });
+    const [friend, setFriends] = useState<any>();
     const [haveNotifs, setHaveNotifs] = useState<boolean>(false);
     useEffect(() => {
         if (notifs.length > 0) {
@@ -43,6 +40,7 @@ function search_friends({ searched, search, auth, notifs }: any) {
             destroy(route('friends.destroy', id));
         }
     };
+    console.log(searched);
     return (
         <YapLayout title={'Searched Friend'} notifs={haveNotifs} auth={auth}>
             <Head title={'Searched Friends'} />
@@ -56,7 +54,10 @@ function search_friends({ searched, search, auth, notifs }: any) {
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
-                                    <CgProfile className="text-5xl" />
+                                    <img
+                                        className="h-12 w-12 rounded-full object-cover"
+                                        src={`${window.location.origin}/storage/images/${f.profile}`}
+                                    />
                                 </div>
                                 <div className="flex h-full w-full justify-between">
                                     <div className="flex h-full items-center justify-between">

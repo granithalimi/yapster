@@ -2,7 +2,6 @@ import YapLayout from '@/layouts/yap-layout';
 import { useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
-import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
 function friends({ friends, auth, notifs }: any) {
@@ -66,7 +65,10 @@ function friends({ friends, auth, notifs }: any) {
                                 className="my-3 flex h-20 w-full gap-3 rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
-                                    <CgProfile className="text-5xl" />
+                                    <img
+                                        className="h-12 w-12 rounded-full object-cover"
+                                        src={`${window.location.origin}/storage/images/${f.users.profile}`}
+                                    />
                                 </div>
                                 <div className="flex h-full w-full justify-between">
                                     <div className="flex h-full items-center justify-between">

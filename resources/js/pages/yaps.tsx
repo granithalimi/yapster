@@ -2,7 +2,6 @@ import YapLayout from '@/layouts/yap-layout';
 import { Link } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
-import { CgProfile } from 'react-icons/cg';
 import { FaSearch } from 'react-icons/fa';
 
 function yaps({ my_convos, auth, notifs }: any) {
@@ -61,12 +60,21 @@ function yaps({ my_convos, auth, notifs }: any) {
                         convos.map((convo: any, ind: any) => (
                             <Link
                                 key={ind}
-                                // href={route('yaps.show', convo.receiver_id)}
                                 href={convo.sender_id === auth.user.id ? route('yaps.show', convo.receiver_id) : route('yaps.show', convo.sender_id)}
                                 className="my-3 flex h-20 w-full gap-3 overflow-hidden rounded-xl bg-white/20 backdrop-blur-3xl duration-300 hover:bg-white/30"
                             >
                                 <div className="flex h-20 w-20 items-center justify-center">
-                                    <CgProfile className="text-5xl" />
+                                    {convo.yaps[0].sender_user.id == auth.user.id ? (
+                                        <img
+                                            className="h-12 w-12 rounded-full object-cover"
+                                            src={`${window.location.origin}/storage/images/${convo.yaps[0].receiver_user.profile}`}
+                                        />
+                                    ) : (
+                                        <img
+                                            className="h-12 w-12 rounded-full object-cover"
+                                            src={`${window.location.origin}/storage/images/${convo.yaps[0].sender_user.profile}`}
+                                        />
+                                    )}
                                 </div>
                                 <div className="flex h-full w-full flex-col">
                                     <div className="flex h-10 w-full items-center justify-between">

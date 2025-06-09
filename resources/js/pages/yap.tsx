@@ -1,5 +1,5 @@
 import YapLayout from '@/layouts/yap-layout';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { useEcho } from '@laravel/echo-react';
 import { useEffect, useState } from 'react';
 
@@ -57,6 +57,9 @@ function yap({ user, yaps, auth, notifs }: any) {
         <YapLayout title={`Chatting with ${user.name}`} notifs={haveNotifs} auth={auth}>
             <div className="flex w-full justify-center">
                 <div className="w-11/12 pb-40">
+                    <Link href={route('other_profile', user.id)}>
+                        <img className="mb-2 h-12 w-12 rounded-full object-cover" src={`${window.location.origin}/storage/images/${user.profile}`} />
+                    </Link>
                     {yap && yap.length > 0 ? (
                         yap.map((y: any, ind: any) => (
                             <div
@@ -75,7 +78,7 @@ function yap({ user, yaps, auth, notifs }: any) {
             <form onSubmit={(e) => handleSend(e)} className="fixed bottom-1/12 flex h-1/12 w-full items-center justify-center gap-3 backdrop-blur-sm">
                 <input value={data.message} onChange={(e) => setData('message', e.target.value)} className="rounded-lg bg-[#11998e] p-1 ps-2" />
                 <button type="submit" className="rounded-md bg-[#11998e] px-3 py-1 text-sm font-bold text-white">
-                    send
+                    Send
                 </button>
             </form>
         </YapLayout>

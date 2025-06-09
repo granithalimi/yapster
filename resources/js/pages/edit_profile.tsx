@@ -1,3 +1,4 @@
+import { Checkbox } from '@/components/ui/checkbox';
 import YapLayout from '@/layouts/yap-layout';
 import { useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ function edit_profile({ auth, notifs }: any) {
         name: auth.user.name,
         phone: auth.user.phone,
         image: null,
+        remove: false,
     });
 
     const handleSubmit = (e: any) => {
@@ -45,8 +47,8 @@ function edit_profile({ auth, notifs }: any) {
                         />
                         <div className="absolute top-0 h-full w-full rounded-full bg-black/30"></div>
                     </label>
-
                     <input type="file" onChange={(e: any) => setData('image', e.target.files[0])} className="hidden" id="image" />
+
                     <div className="flex flex-col">
                         <label>Name</label>
                         <input
@@ -65,6 +67,10 @@ function edit_profile({ auth, notifs }: any) {
                             onChange={(e) => setData('phone', e.target.value)}
                             className="rounded-xl border-1 border-white p-1 ps-2"
                         />
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <Checkbox id="remove" name="remove" checked={data.remove} onClick={() => setData('remove', !data.remove)} tabIndex={3} />
+                        <label htmlFor="remove">Remove profile</label>
                     </div>
                     <button className="mt-4 rounded-lg bg-blue-500 px-3 py-1 text-sm font-bold text-white" type="submit">
                         Update

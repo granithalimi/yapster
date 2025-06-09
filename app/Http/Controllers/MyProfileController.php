@@ -18,7 +18,29 @@ class MyProfileController extends Controller
             'notifs' => $notifs,
         ]);
     }
+    public function otherProfile(Request $request) {
+        $notifs = Friend::with("notifs")->where("receiver_id", auth()->id())->where("status", "pending")->get();
+        $other_user = User::find($request->id);
+        $status = Friend::where(function($q) use ($other_user) {
+            $q->where("sender_id", auth()->id())->where("receiver_id", $other_user->id);
+        })->orWhere(function($q) use ($other_user) {
+            $q->where("sender_id", $other_user->id)->where("receiver_id", auth()->id());
+        })->get();
+
+        return Inertia::render("other_profile", [
+            'following' => Friend::with('users')->where("sender_id", $other_user->id)->get(),
+            'followers' => Friend::with('notifs')->where("receiver_id", $other_user->id)->where("status", "accepted")->get(), 
+            'notifs' => $notifs,
+            'user' => $other_user,
+            'status' => $status,
+        ]);
+    }
     public function updateProfile(Request $request){
+        if($request->remove){
+            User::find(auth()->id())->update(['name' => $request->name, 'phone' =>  $request->phone, 'profile' => "default.png"]);
+            return to_route("my_profile.edit");
+        }
+
         if($request->hasFile('image')){
             $path = $request->file("image")->store("images", "public");
             $profile = str_replace('images/', '', $path); 
@@ -26,6 +48,7 @@ class MyProfileController extends Controller
         }else{
             User::find(auth()->id())->update(['name' => $request->name, 'phone' =>  $request->phone]);
         }
+
         return to_route("my_profile.edit");
     }
     public function editProfile(){
