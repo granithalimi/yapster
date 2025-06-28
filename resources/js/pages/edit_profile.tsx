@@ -47,7 +47,15 @@ function edit_profile({ auth, notifs }: any) {
                         />
                         <div className="absolute top-0 h-full w-full rounded-full bg-black/30"></div>
                     </label>
-                    <input type="file" onChange={(e: any) => setData('image', e.target.files[0])} className="hidden" id="image" name='image' />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        capture="user"
+                        onChange={(e: any) => setData('image', e.target.files[0])}
+                        className="hidden"
+                        id="image"
+                        name="image"
+                    />
 
                     <div className="flex flex-col">
                         <label>Name</label>
